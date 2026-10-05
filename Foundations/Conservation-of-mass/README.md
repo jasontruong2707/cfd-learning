@@ -59,7 +59,7 @@ $$
 Expanding the product in (4) gives
 
 $$
-\frac{\partial \rho}{\partial t} + \mathbf{u}\cdot\nabla\rho + \rho\,\nabla\!\cdot\!\mathbf{u} = 0 \qquad (6)
+\frac{\partial \rho}{\partial t} + \mathbf{u}\cdot\nabla\rho + \rho\,\nabla\cdot\mathbf{u} = 0 \qquad (6)
 $$
 
 Assume the density is constant in time and in space. This assumption removes the first term of (6), because $\partial\rho/\partial t = 0$, and the second term, because $\nabla\rho = \mathbf{0}$. What remains is $\rho\,\nabla\!\cdot\!\mathbf{u} = 0$, and $\rho > 0$, so
