@@ -45,7 +45,7 @@ $$
 Equation (3) holds for every volume $V$ inside the fluid. A continuous integrand whose integral vanishes over every volume is zero at every point, which gives the continuity equation:
 
 $$
-\frac{\partial \rho}{\partial t} + \nabla\!\cdot\!(\rho\mathbf{u}) = 0 \qquad (4)
+\frac{\partial \rho}{\partial t} + \nabla\cdot(\rho\mathbf{u}) = 0 \qquad (4)
 $$
 
 Each term of (4) has the unit kg/(m³·s). Written out in two dimensions:
