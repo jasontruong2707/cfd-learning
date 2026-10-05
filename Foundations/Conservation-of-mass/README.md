@@ -39,7 +39,7 @@ Equation (2) is the form a finite volume solver works with. The finite volume me
 The volume $V$ is fixed, so the time derivative in (1) moves inside the integral. The divergence theorem turns the surface integral into a volume integral:
 
 $$
-\int_V \left[\frac{\partial \rho}{\partial t} + \nabla\!\cdot\!(\rho\mathbf{u})\right]\mathrm{d}V = 0 \qquad (3)
+\int_V \left[\frac{\partial \rho}{\partial t} + \nabla\cdot(\rho\mathbf{u})\right]\mathrm{d}V = 0 \qquad (3)
 $$
 
 Equation (3) holds for every volume $V$ inside the fluid. A continuous integrand whose integral vanishes over every volume is zero at every point, which gives the continuity equation:
@@ -65,7 +65,7 @@ $$
 Assume the density is constant in time and in space. This assumption removes the first term of (6), because $\partial\rho/\partial t = 0$, and the second term, because $\nabla\rho = \mathbf{0}$. What remains is $\rho\,\nabla\!\cdot\!\mathbf{u} = 0$, and $\rho > 0$, so
 
 $$
-\nabla\!\cdot\!\mathbf{u} = 0 \qquad (7)
+\nabla\\cdot\\mathbf{u} = 0 \qquad (7)
 $$
 
 In two dimensions,
