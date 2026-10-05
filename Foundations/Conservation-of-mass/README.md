@@ -62,7 +62,7 @@ $$
 \frac{\partial \rho}{\partial t} + \mathbf{u}\cdot\nabla\rho + \rho\,\nabla\cdot\mathbf{u} = 0 \qquad (6)
 $$
 
-Assume the density is constant in time and in space. This assumption removes the first term of (6), because $\partial\rho/\partial t = 0$, and the second term, because $\nabla\rho = \mathbf{0}$. What remains is $\rho\,\nabla\!\cdot\!\mathbf{u} = 0$, and $\rho > 0$, so
+Assume the density is constant in time and in space. This assumption removes the first term of (6), because $\partial\rho/\partial t = 0$, and the second term, because $\nabla\rho = \mathbf{0}$. What remains is $\rho\,\nabla\cdot\mathbf{u} = 0$, and $\rho > 0$, so
 
 $$
 \nabla\\cdot\\mathbf{u} = 0 \qquad (7)
@@ -113,7 +113,7 @@ $$
 with $U_0 = 1$ m/s. Differentiating (12) gives $\partial u/\partial x = +(\pi U_0/L)\cos(\pi x/L)\cos(\pi y/L)$ and $\partial v/\partial y$ equal to the same expression with a minus sign, so
 
 $$
-\nabla\!\cdot\!\mathbf{u} = 0 \quad \text{everywhere for field A} \qquad (13)
+\nabla\cdot\mathbf{u} = 0 \quad \text{everywhere for field A} \qquad (13)
 $$
 
 On the unit square, field A is one vortex cell with its centre of rotation at $x = y = L/2$. The cover figure shows it.
@@ -127,7 +127,7 @@ $$
 and a divergence that is known in closed form and is not zero:
 
 $$
-\nabla\!\cdot\!\mathbf{u} = \frac{\pi U_0}{L}\cos\frac{\pi x}{L}\sin\frac{\pi y}{L} \qquad (15)
+\nabla\cdot\mathbf{u} = \frac{\pi U_0}{L}\cos\frac{\pi x}{L}\sin\frac{\pi y}{L} \qquad (15)
 $$
 
 Field B does not conserve mass. It is used because (15) can be subtracted from (11) to give an error at every node, which is what the grid study of this post measures.
@@ -236,9 +236,9 @@ d[1:-1, 1:-1] = ((u[1:-1, 2:] - u[1:-1, :-2]) / (2 * dx)
                  + (v[2:, 1:-1] - v[:-2, 1:-1]) / (2 * dx))
 ```
 
-**Step 5. Mass balance over a control volume.** The net mass flow out through the four faces of a box is compared with the integral of $\rho\,\nabla\!\cdot\!\mathbf{u}$ over the same box. Both sides use the trapezoid rule over the same rectangle, so the difference between them measures the error of (11) alone. The box is placed off centre, because a box centred on the domain gives zero on both sides for either field by symmetry.
+**Step 5. Mass balance over a control volume.** The net mass flow out through the four faces of a box is compared with the integral of $\rho\,\nabla\cdot\mathbf{u}$ over the same box. Both sides use the trapezoid rule over the same rectangle, so the difference between them measures the error of (11) alone. The box is placed off centre, because a box centred on the domain gives zero on both sides for either field by symmetry.
 
-**Step 6. Grid refinement.** For field B, the error $D_{i,j} - (\nabla\!\cdot\!\mathbf{u})_{i,j}$ is formed on each grid, and its maximum and root-mean-square value over the interior nodes are recorded. Both measures are defined again in the finite difference method post.
+**Step 6. Grid refinement.** For field B, the error $D_{i,j} - (\nabla\cdot\mathbf{u})_{i,j}$ is formed on each grid, and its maximum and root-mean-square value over the interior nodes are recorded. Both measures are defined again in the finite difference method post.
 
 **Step 7. Plots.** The five figures of this post.
 
