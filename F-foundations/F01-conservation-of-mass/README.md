@@ -108,7 +108,80 @@ Field B does not conserve mass. It is used because (15) can be subtracted from (
 
 ## Excel solver
 
-This post has no spreadsheet. There is no case to solve here, only an identity to check on a grid, and the check needs several grids in sequence. The first spreadsheet of the series is in post F04.
+File: `F01-conservation-of-mass.xlsx`
+
+The workbook has the five tabs of the series: `Inputs`, `Solver`, `Analytical`, `Error` and `Plots`. Each tab holds the full 21 × 21 grid as a block of cells, so every number of equation (11) can be read and traced to the two cells it came from. Four steps of the standard ten do not apply to this post, and the reason is written under each.
+
+### Step 1. Inputs
+
+The `Inputs` tab holds $L$, $N$, $U_0$ and $\rho$ as named cells, shaded light blue. The cell size is computed from two of them, `dx` `=L/N`, and every formula elsewhere in the workbook uses the names rather than the values. The control volume is given as four node indices `ia`, `ib`, `ja`, `jb`, with a check cell that reports whether the box lies inside the interior nodes. Two further cells, `N_2` and `N_3`, set the coarser grids used in Step 9.
+
+$N$ can be lowered to any value from 5 to 21. Cells outside the current grid return an empty string, so the blocks shrink with $N$ and every result on the `Error` tab follows.
+
+### Step 2. Grid
+
+Each block carries its own grid. Row $R+1$ holds the index $i$, row $R+2$ holds $x_i$ from equation (9), and column B holds $y_j$:
+
+```
+=IF(3<=N,(3-0.5)*dx,"")
+```
+
+Column C and the row above the first data row are left empty on purpose. They are the gap that stops the central difference of Step 5 from reaching past the edge of the grid and picking up a coordinate as if it were a velocity.
+
+### Step 3. Initial condition
+
+Not applicable. Both velocity fields are given in closed form by equations (12) and (14), so there is nothing to initialise.
+
+### Step 4. Boundary conditions
+
+Not applicable in the usual sense. Equation (8) is a constraint rather than a transport equation, so it takes no boundary condition. The outer ring of each block is shaded light orange to mark the nodes where the central difference has no neighbour on one side, and no value is computed there.
+
+### Step 5. Discrete equation
+
+Equation (11), on the `Solver` tab. The divergence of field A at node $(i,j) = (3,5)$ reads
+
+```
+=IF(COUNT(E12,G12,F39,F41)<4,"",(G12-E12)/(2*dx)+(F41-F39)/(2*dx))
+```
+
+`E12` and `G12` are $u$ at the nodes to the west and east, `F39` and `F41` are $v$ at the nodes below and above. The `COUNT` test is what blanks the boundary ring: if any of the four neighbours is empty, the cell returns an empty string instead of a number.
+
+### Step 6. Time marching or iteration
+
+Not applicable. Nothing in this post is advanced in time, and no cell refers to itself, so iterative calculation stays switched off.
+
+### Step 7. Convergence check
+
+Not applicable, for the same reason as Step 6. The accuracy of the result is set by $\Delta x$ alone, which is what Step 9 measures.
+
+### Step 8. Analytical solution
+
+The `Analytical` tab holds equations (13) and (15) on the same grid, one block each:
+
+```
+=IF(COUNT($B40,F$34)<2,"",(PI()*U0/L)*COS(PI()*F$34/L)*SIN(PI()*$B40/L))
+```
+
+### Step 9. Error
+
+The `Error` tab subtracts the two and takes the absolute value, node by node. The maximum and RMS error follow from the whole block, and the blank boundary ring drops out of both because `MAX`, `SUMSQ` and `COUNT` ignore text:
+
+```
+=MAX(errA)
+=SQRT(SUMSQ(errA)/COUNT(errA))
+```
+
+The mass balance of Step 5 of the notebook is on the same tab. The surface integral is built from four trapezoid sums over the faces of the box, and the volume integral from a two-dimensional trapezoid rule over the same rectangle, both addressed with `INDEX` so that changing `ia`, `ib`, `ja` or `jb` moves the box.
+
+The grid study needs three grids at once, so the tab carries two further blocks that repeat field B on the `N_2` and `N_3` grids. For field B the $v$ term of equation (11) is zero, so those blocks compute the $x$ derivative alone; the mask still requires a neighbour row above and below, which keeps the set of interior nodes the same as on the main grid. The observed order comes from two rows of the table:
+
+```
+=LN(C21/C22)/LN(B21/B22)
+```
+
+### Step 10. Plots
+
+The `Plots` tab shows the discrete divergence of both fields as a block of narrow cells with a three-colour scale, blue for negative and red for positive, which gives the contour of Figure 3 inside the sheet. Below it is a log-log chart of the grid study.
 
 ## Python solver
 
@@ -181,10 +254,15 @@ The observed order approaches 2.000 from below, which matches the order predicte
 
 *Figure 4. Error of the discrete divergence of field B against $\Delta x$, on logarithmic axes. The solid black line has slope 2.*
 
+**The spreadsheet gives the same numbers.** The workbook runs the case at $N = 21$, which is the third row of the grid study above. It returns a maximum error of $1.1412\times10^{-2}$ s⁻¹ and an RMS error of $5.8207\times10^{-3}$ s⁻¹ for field B, matching the notebook to every digit shown. For field A the largest absolute divergence is $2.44\times10^{-15}$ s⁻¹, again at round-off. The grid study on the `Error` tab, with $N_3 = 6$, $N_2 = 11$ and $N = 21$, gives an observed order of 1.511 then 1.888 from the maximum error, and 1.851 then 1.968 from the RMS error.
+
+The control volume of the spreadsheet is set by node indices rather than by coordinates, so it is a slightly different box: $0.1190 \le x \le 0.5952$ m, $0.2143 \le y \le 0.7857$ m. Over that box, field B gives a surface integral of $2.93228\times10^{-1}$ kg/(m·s) against a volume integral of $2.91590\times10^{-1}$ kg/(m·s), a relative difference of $5.62\times10^{-3}$ at $\Delta x = 0.04762$ m. Field A gives $1.39\times10^{-17}$ and $-8.33\times10^{-18}$ kg/(m·s), both at round-off.
+
 ## Files
 
 | File | Content |
 |---|---|
+| `F01-conservation-of-mass.xlsx` | Excel solver |
 | `F01-conservation-of-mass.ipynb` | Python notebook |
 | `figures/` | All figures in this post |
 
